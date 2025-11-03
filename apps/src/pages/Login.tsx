@@ -54,7 +54,7 @@ export default function Login() {
 
   const handleSnackbarClose = () => setSnackbarOpen(false);
   const dispatch = useAppDispatch();
-
+ 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
     if (emailError) setEmailError("");
@@ -64,45 +64,45 @@ export default function Login() {
     if (passwordError) setPasswordError("");
   };
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    let valid = true;
+const handleLogin = async (e: React.FormEvent) => {
+  e.preventDefault();
+  let valid = true;
 
-    setEmailError("");
-    setErrorMessage("");
+  setEmailError("");
+  setErrorMessage("");
 
-    if (!email) {
-      setEmailError("Email is required");
-      valid = false;
-    }
+  if (!email) {
+    setEmailError("Email is required");
+    valid = false;
+  }
 
-    if (!valid) return;
+  if (!valid) return;
 
-    try {
-      const response = await login({ email, password });
-      // Check if token exists in response.data
-      const token = response.data?.token;
+  try {
+    const response = await login({ email, password });
+    // Check if token exists in response.data
+    const token = response.data?.token;
 
-      if (token) {
-        // Save to localStorage
-        localStorage.setItem("token", token);
-        // Decode user info
-        const decodedUserDetails: JwtPayload = jwtDecode(token);
+    if (token) {
+      // Save to localStorage
+      localStorage.setItem("token", token);
+       // Decode user info
+      const decodedUserDetails: JwtPayload = jwtDecode(token);
 
-        // Immediately fetch user details after login
-        dispatch(fetchUserDetails(decodedUserDetails.id));
+      // Immediately fetch user details after login
+      dispatch(fetchUserDetails(decodedUserDetails.id));
 
-        // Navigate to home screen
-        navigate(PATHS.HOMESCREEN);
-      } else {
-        setErrorMessage(response.message || "Login failed");
-        setSnackbarOpen(true);
-      }
-    } catch (err: any) {
-      setErrorMessage(err.message || "Unable to connect to server");
+      // Navigate to home screen
+      navigate(PATHS.HOMESCREEN);
+    } else {
+      setErrorMessage(response.message || "Login failed");
       setSnackbarOpen(true);
     }
-  };
+  } catch (err: any) {
+    setErrorMessage(err.message || "Unable to connect to server");
+    setSnackbarOpen(true);
+  }
+};
 
 
   return (

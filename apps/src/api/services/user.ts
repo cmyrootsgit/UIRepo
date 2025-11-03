@@ -34,14 +34,14 @@ export interface UserDetails {
   IsFirstTimeLogin: boolean;
   CreatedAt: string;
   UpdatedAt: string;
-  profile: UserProfile; 
+  profile: UserProfile;
 }
 
 // API call
 export const userService = {
   async getUserDetails(userId: string): Promise<UserDetailsResponse> {
     const response = await baseHttpClient.get<UserDetailsResponse>(
-      `/user/details/${userId}`
+      `/user/userDetails/${userId}`
     );
     return response;
   },
