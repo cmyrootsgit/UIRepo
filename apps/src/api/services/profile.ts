@@ -55,7 +55,7 @@ export interface UserProfile {
 export const userProfileService = {
   async updateProfile(userId: string, payload: UserProfileUpdateRequest): Promise<UserProfileUpdateResponse> {
     const response = await baseHttpClient.put<UserProfileUpdateResponse>(
-      `/userProfile/update/${userId}`,
+      `/user/userProfile/update/${userId}`,
       payload
     );
     return response;

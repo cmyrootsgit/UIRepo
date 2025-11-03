@@ -14,14 +14,7 @@ export const loginUser = createAsyncThunk<LoginResponse, LoginRequest>(
   "auth/loginUser",
   async (payload, { rejectWithValue }) => {
     try {
-      const response = {
-        "status": "SUCCESS",
-        "code": 200,
-        "message": "Login successful",
-        "data": {
-          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjODM3ZGFkOGQ1MGE4MDhlYzVjYWJkZiIsImVtYWlsIjoibnYudmVlbmEubkBnbWFpbC5jb20iLCJ1c2VyVHlwZSI6MSwiZmlyc3ROYW1lIjoiVmVlbmEiLCJsYXN0TmFtZSI6Ik5WIiwiaWF0IjoxNzYxMjk2NzQyLCJleHAiOjE3NjEzMDAzNDJ9.aKG3EJC30vVASt-a6jYWkp_y9S_0Kk4udtAI99zorjQ"
-        }
-      }
+      const response = await authService.loginWithEmail(payload);
 
       // ✅ Check the new response format
       if (!response.data?.token) {
@@ -74,7 +67,7 @@ export const authSlice = createSlice({
     builder.addCase(loginUser.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
       state.loading = false;
       state.user = action.payload;
-      state.token = action.payload.data?.token || null;
+      state.token = action.payload.data?.token || null; 
       state.isAuthenticated = !!action.payload.data?.token;
     });
 

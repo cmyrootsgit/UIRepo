@@ -7,63 +7,7 @@ export const fetchUserDetails = createAsyncThunk(
   "user/fetchUserDetails",
   async (userId: string, { rejectWithValue }) => {
     try {
-      const response = {
-        "status": "SUCCESS",
-        "code": 200,
-        "message": "User details fetched",
-        "data": {
-          "_id": "5e32ae4fb5285e1e088408ea",
-          "CreatedBy": "5e32ae4fb5285e1e088408ea",
-          "UpdatedBy": "5e32ae4fb5285e1e088408ea",
-          "FirstName": "karthik",
-          "LastName": "arjun",
-          "Email": "karthikarjun54@gmail.com",
-          "SocialLogin": {
-            "FacebookId": null,
-            "GoogleId": "karthikarjun54@gmail.com"
-          },
-          "Gender": 1,
-          "SecurityQuestion1": 8,
-          "SecurityAnswer1": "a1",
-          "SecurityQuestion2": 14,
-          "SecurityAnswer2": "a2",
-          "LoginFailedCount": 0,
-          "LastLoginFailed": false,
-          "Locked": false,
-          "Active": true,
-          "ResetPasswordAtLogin": false,
-          "AuthToken": "zlmmQwIeAIVEZ/Kg19Zc0oPjNWsO9qE5NSLdd2DVAqZ7oJcXlolJAqVkveXnfHQIZB/E6gsyn+L0usqDxbhKbA==",
-          "UserType": 3,
-          "IsFirstTimeLogin": false,
-          "CreatedAt": "2025-10-24T09:06:58.201Z",
-          "UpdatedAt": "2025-10-24T09:06:58.201Z",
-          "profile": {
-            "_id": "5e9166deb5285e0f00a4b279",
-            "CreatedBy": "5e32ae4fb5285e1e088408ea",
-            "UpdatedBy": "5e32ae4fb5285e1e088408ea",
-            "HighSchool": null,
-            "College": null,
-            "LinkedInUrl": null,
-            "UserId": "5e32ae4fb5285e1e088408ea",
-            "PhotoPath": "users/ZCucUSq4FM29mDEOgj3nMT6JdXzHjVgKIrQ5Cmlc5goeq/profilephoto.jpg",
-            "DateOfBirth": {
-              "low": 1265768448,
-              "high": 148362762,
-              "unsigned": false
-            },
-            "BirthMonthDate": "4-1",
-            "MaritalStatus": "2",
-            "FamilyName": "good",
-            "AboutMe": null,
-            "CurrentLocation": "Trichy, Tamil Nadu, India",
-            "Location": "Musiri, Tamil Nadu, India",
-            "Occupation": null,
-            "ContactNumber": null,
-            "CreatedAt": "2025-10-24T09:06:58.208Z",
-            "UpdatedAt": "2025-10-24T09:06:58.208Z"
-          }
-        }
-      }
+      const response = await userService.getUserDetails(userId);
       return response.data; // ✅ only user object
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || "Failed to fetch user");

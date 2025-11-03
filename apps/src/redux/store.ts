@@ -1,8 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import postReducer from "../slice/postSlice";
-import userReducer from "../slice/userSlice";  
-import authReducer from "../slice/authSlice"; 
+import userReducer from "../slice/userSlice";
+import authReducer from "../slice/authSlice";
 import profileReducer from "../slice/profileSlice";
+import relativeReducer from "../slice/relativeSlice";
 
 
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
@@ -10,9 +11,10 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 export const store = configureStore({
   reducer: {
     posts: postReducer,
-    auth: authReducer,   
+    auth: authReducer,
     user: userReducer,
     profile: profileReducer,
+    relative: relativeReducer,
   },
 });
 

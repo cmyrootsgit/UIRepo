@@ -7,7 +7,7 @@ export const fetchPosts = async (
   token: string
 ): Promise<PostFromAPI[]> => {
   const res = await baseHttpClient.get<PostsResponse>(
-    `/posts/getall/${userId}`,
+    `/post/getall/${userId}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -15,5 +15,5 @@ export const fetchPosts = async (
     }
   );
 
-  return res.data.posts; 
+  return res.data.posts;
 };

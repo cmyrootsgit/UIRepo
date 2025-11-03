@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import {
     Card,
     CardHeader,
@@ -17,66 +17,38 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import AddFriendIcon from "../assets/add-user-icon.svg";
+import { useAppDispatch, useAppSelector } from "../redux/store";
+import { getRelatives } from "../slice/relativeSlice";
+import { RelativeRequest } from "../types/relativeTypes";
 
-interface Relative {
-    id: number;
-    name: string;
-    suggestion: string;
-    profileImage: string;
-}
 
 interface RelativesCardProps {
     title?: string;
-    relatives?: Relative[];
     onClose?: () => void;
 }
 
-const defaultRelatives: Relative[] = [
-    {
-        id: 1,
-        name: "Praveen Kumar",
-        suggestion: "Suggested for you",
-        profileImage: "https://randomuser.me/api/portraits/men/11.jpg",
-    },
-    {
-        id: 2,
-        name: "Akash P",
-        suggestion: "Suggested for you",
-        profileImage: "https://randomuser.me/api/portraits/men/12.jpg",
-    },
-    {
-        id: 3,
-        name: "Siva Rama Krishnan",
-        suggestion: "Suggested for you",
-        profileImage: "https://randomuser.me/api/portraits/men/13.jpg",
-    },
-    {
-        id: 4,
-        name: "Gopala Krishnan",
-        suggestion: "Suggested for you",
-        profileImage: "https://randomuser.me/api/portraits/men/14.jpg",
-    },
-    {
-        id: 5,
-        name: "Dinesh Kumar",
-        suggestion: "Suggested for you",
-        profileImage: "https://randomuser.me/api/portraits/men/15.jpg",
-    },
-    {
-        id: 6,
-        name: "Naveen",
-        suggestion: "Suggested for you",
-        profileImage: "https://randomuser.me/api/portraits/men/16.jpg",
-    },
-];
 
 const RelativesCard: FC<RelativesCardProps> = ({
     title = "Relatives you may know",
-    relatives = defaultRelatives,
     onClose,
 }) => {
     const theme = useTheme();
+    const dispatch = useAppDispatch();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+    const { details } = useAppSelector((state) => state.user);
+    const { suggestions } = useAppSelector((state) => state.relative);
+
+    useEffect(() => {
+        if (details?._id) {
+            const name = details.FirstName + ' ' + details.LastName;
+            const payload: RelativeRequest = {
+                userId: details._id,
+                name
+            }
+            dispatch(getRelatives({ payload }));
+        }
+    }, [dispatch]);
+
 
     return (
         <Card sx={{ maxWidth: 360, mx: "auto" }}>
@@ -93,25 +65,25 @@ const RelativesCard: FC<RelativesCardProps> = ({
                 }
                 action={
                     isMobile && (
-                    <IconButton
-                        aria-label="close"
-                        onClick={onClose}
-                        size="small"
-                        sx={{
-                            p: 0.5,
-                            color: "text.secondary",
-                        }}
-                    >
-                        <CloseIcon fontSize="small" />
-                    </IconButton>
+                        <IconButton
+                            aria-label="close"
+                            onClick={onClose}
+                            size="small"
+                            sx={{
+                                p: 0.5,
+                                color: "text.secondary",
+                            }}
+                        >
+                            <CloseIcon fontSize="small" />
+                        </IconButton>
                     )
                 }
                 sx={{
                     borderBottom: "2px solid #e0e0e0",
                     borderTop: "1px solid #e0e0e0",
                     "& .MuiCardHeader-action": {
-                        marginTop: 0, 
-                        alignSelf: "center", 
+                        marginTop: 0,
+                        alignSelf: "center",
                     },
                 }}
             />
@@ -119,9 +91,9 @@ const RelativesCard: FC<RelativesCardProps> = ({
             {/* Relatives List */}
             <CardContent sx={{ p: 0 }}>
                 <List disablePadding>
-                    {relatives.map((relative) => (
+                    {suggestions?.map((relative, index) => (
                         <ListItem
-                            key={relative.id}
+                            key={index}
                             secondaryAction={
                                 <IconButton edge="end" sx={{ p: 0, mr: 1 }}>
                                     <Avatar src={AddFriendIcon} sx={{ width: 24, height: 24 }} />

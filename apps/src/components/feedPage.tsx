@@ -303,7 +303,6 @@ const FeedPage: FC = () => {
   const profile = details?.profile;
   const [localPosts, setLocalPosts] = useState<Post[]>([]);
 
-  console.log(posts)
   const handleAddPost = (content: string) => {
     const newPost: Post = {
       id: Date.now().toString(),

@@ -14,6 +14,15 @@ import { useAppSelector } from "../redux/store";
 import { useNavigate } from "react-router-dom";
 import { getProfileImage } from "../utils/profileImage";
 import SkeletonMyProfile from "../common/skeletonMyProfile";
+import EditIcon from "../assets/edit-icon.svg";
+import email from "../assets/email.svg";
+import location from "../assets/location.svg";
+import userDetailsSvg from "../assets/user-details.svg";
+import familySvg from "../assets/family-name.svg";
+import postIcon from "../assets/post-icon.svg"
+import postImage1Svg from "../assets/post-image-1.svg";
+import postImage2Svg from "../assets/post-image-2.svg";
+import postImage3Svg from "../assets/post-image-3.svg";
 
 const MyProfile: FC = () => {
   const isMobile = useMediaQuery("(max-width:900px)");
@@ -103,7 +112,7 @@ const MyProfile: FC = () => {
                 >
                   <Box
                     component="img"
-                    src="/src/assets/edit-icon.svg"
+                    src={EditIcon}
                     alt="Edit Profile"
                     sx={{ width: 24, height: 24 }}
                   />
@@ -145,26 +154,26 @@ const MyProfile: FC = () => {
               {/* Info with icons */}
               <Stack spacing={1.2} mt={1.5}>
                 {[
-                  { icon: "/src/assets/email.svg", value: user?.Email },
+                  { icon: email, value: user?.Email },
                   {
-                    icon: "/src/assets/location.svg",
+                    icon: location,
                     value: user?.profile.Location,
                   },
                   {
-                    icon: "/src/assets/user-details.svg",
+                    icon: userDetailsSvg,
                     value: `${genderMap[user?.profile.Gender || "3"]} | ${user?.profile.MaritalStatus} | ${user?.profile.DateOfBirthString
-                        ? `${new Date(
-                          user.profile.DateOfBirthString
-                        ).toLocaleString("en-US", { month: "short" })} ${new Date(
-                          user.profile.DateOfBirthString
-                        ).getDate()} ${new Date(
-                          user.profile.DateOfBirthString
-                        ).getFullYear()}`
-                        : ""
+                      ? `${new Date(
+                        user.profile.DateOfBirthString
+                      ).toLocaleString("en-US", { month: "short" })} ${new Date(
+                        user.profile.DateOfBirthString
+                      ).getDate()} ${new Date(
+                        user.profile.DateOfBirthString
+                      ).getFullYear()}`
+                      : ""
                       }`,
                   },
                   {
-                    icon: "/src/assets/family-name.svg",
+                    icon: familySvg,
                     value: user?.profile.FamilyName,
                   },
                 ].map((item, idx) => (
@@ -200,7 +209,7 @@ const MyProfile: FC = () => {
         >
           <Box
             component="img"
-            src="/src/assets/post-icon.svg"
+            src={postIcon}
             alt="Posts"
             sx={{ width: 24, height: 24 }}
           />
@@ -229,7 +238,7 @@ const MyProfile: FC = () => {
             justifyContent: isMobile ? "center" : "flex-start",
           }}
         >
-          {["/src/assets/post-image-1.svg", "/src/assets/post-image-2.svg", "/src/assets/post-image-3.svg"].map(
+          {[postImage1Svg, postImage2Svg, postImage3Svg].map(
             (src, i) => (
               <Box
                 key={i}
