@@ -1,21 +1,21 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { RelativeFromAPI, RelativeRequest } from "../types/relativeTypes";
+import { RelativesResponseData, RelativeRequest } from "../types/relativeTypes";
 import { fetchRelatives } from "../api";
 
 export interface RelativeState {
-    suggestions: RelativeFromAPI[];
+    suggestions: RelativesResponseData;
     loading: boolean;
     error: string | null;
 }
 
 const initialState: RelativeState = {
-    suggestions: [],
+    suggestions: { data: { peopleYouMayKnow: [], relatives: [] } },
     loading: false,
     error: null,
 };
 
 export const getRelatives = createAsyncThunk<
-    RelativeFromAPI[],
+    RelativesResponseData,
     { payload: RelativeRequest }
 >("relative/getRelatives", async ({ payload }, thunkAPI) => {
     try {
