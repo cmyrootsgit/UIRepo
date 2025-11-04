@@ -10,10 +10,19 @@ export interface RelativesResponse {
     message: string;
     data: {
         relatives: RelativeFromAPI[];
+        peopleYouMayKnow: RelativeRequest[]
+    };
+}
+
+export interface RelativesResponseData {
+    data: {
+        relatives: RelativeFromAPI[];
+        peopleYouMayKnow: RelativeRequest[]
     };
 }
 
 export interface RelativeRequest {
     userId: string;
     name: string;
+    relation?: string;
 }

@@ -3,7 +3,6 @@ import {
     Card,
     CardHeader,
     CardContent,
-    CardActions,
     Avatar,
     Typography,
     List,
@@ -11,7 +10,6 @@ import {
     ListItemAvatar,
     ListItemText,
     IconButton,
-    Button,
     useTheme,
     useMediaQuery,
 } from "@mui/material";
@@ -47,7 +45,7 @@ const RelativesCard: FC<RelativesCardProps> = ({
             }
             dispatch(getRelatives({ payload }));
         }
-    }, [dispatch]);
+    }, [dispatch, details?._id]);
 
 
     return (
@@ -91,7 +89,7 @@ const RelativesCard: FC<RelativesCardProps> = ({
             {/* Relatives List */}
             <CardContent sx={{ p: 0 }}>
                 <List disablePadding>
-                    {suggestions?.map((relative, index) => (
+                    {[...suggestions.data.relatives, ...suggestions.data.peopleYouMayKnow]?.map((relative, index) => (
                         <ListItem
                             key={index}
                             secondaryAction={
@@ -102,7 +100,7 @@ const RelativesCard: FC<RelativesCardProps> = ({
                             sx={{ px: 2, py: 0.8 }}
                         >
                             <ListItemAvatar>
-                                <Avatar src={relative.profileImage} alt={relative.name} />
+                                <Avatar src={relative.name} alt={relative.name} />
                             </ListItemAvatar>
                             <ListItemText
                                 primary={
@@ -112,7 +110,7 @@ const RelativesCard: FC<RelativesCardProps> = ({
                                 }
                                 secondary={
                                     <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 400, fontSize: "12px" }}>
-                                        {relative.suggestion}
+                                        {relative.relation ?? "Relative"}
                                     </Typography>
                                 }
                                 sx={{ flex: 1 }}
@@ -121,24 +119,6 @@ const RelativesCard: FC<RelativesCardProps> = ({
                     ))}
                 </List>
             </CardContent>
-
-            {/* Footer */}
-            <CardActions
-                sx={{ justifyContent: "center", backgroundColor: "#E9E9E9", py: 1 }}
-            >
-                <Button
-                    size="small"
-                    onClick={() => console.log("See All clicked")}
-                    sx={{
-                        fontWeight: 400,
-                        fontSize: "14px",
-                        textTransform: "none",
-                        color: "#1E1E1E",
-                    }}
-                >
-                    See All
-                </Button>
-            </CardActions>
         </Card>
     );
 };
