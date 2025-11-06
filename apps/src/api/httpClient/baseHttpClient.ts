@@ -37,6 +37,10 @@ export class BaseHttpClient {
 
     if (!response.ok) {
       const errorMessage = responseData?.message || responseData || `HTTP error! status: ${response.status}`;
+      if (response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = '/';
+      }
       throw new Error(errorMessage);
     }
 

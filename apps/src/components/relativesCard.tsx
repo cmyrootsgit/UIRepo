@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useMemo } from "react";
 import {
     Card,
     CardHeader,
@@ -18,6 +18,7 @@ import AddFriendIcon from "../assets/add-user-icon.svg";
 import { useAppDispatch, useAppSelector } from "../redux/store";
 import { getRelatives } from "../slice/relativeSlice";
 import { RelativeRequest } from "../types/relativeTypes";
+import SkeletonRelative from "../common/skeletonRelative";
 
 
 interface RelativesCardProps {
@@ -34,7 +35,7 @@ const RelativesCard: FC<RelativesCardProps> = ({
     const dispatch = useAppDispatch();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
     const { details } = useAppSelector((state) => state.user);
-    const { suggestions } = useAppSelector((state) => state.relative);
+    const { suggestions, loading } = useAppSelector((state) => state.relative);
 
     useEffect(() => {
         if (details?._id) {
@@ -47,6 +48,11 @@ const RelativesCard: FC<RelativesCardProps> = ({
         }
     }, [dispatch, details?._id]);
 
+    const mergedRelatives = useMemo(() => {
+        const relatives = suggestions.data?.relatives || [];
+        const peopleYouMayKnow = suggestions.data?.peopleYouMayKnow || [];
+        return [...relatives, ...peopleYouMayKnow];
+    }, [suggestions.data?.relatives, suggestions.data?.peopleYouMayKnow]);
 
     return (
         <Card sx={{ maxWidth: 360, mx: "auto" }}>
@@ -87,38 +93,39 @@ const RelativesCard: FC<RelativesCardProps> = ({
             />
 
             {/* Relatives List */}
-            <CardContent sx={{ p: 0 }}>
-                <List disablePadding>
-                    {[...suggestions.data.relatives, ...suggestions.data.peopleYouMayKnow]?.map((relative, index) => (
-                        <ListItem
-                            key={index}
-                            secondaryAction={
-                                <IconButton edge="end" sx={{ p: 0, mr: 1 }}>
-                                    <Avatar src={AddFriendIcon} sx={{ width: 24, height: 24 }} />
-                                </IconButton>
-                            }
-                            sx={{ px: 2, py: 0.8 }}
-                        >
-                            <ListItemAvatar>
-                                <Avatar src={relative.name} alt={relative.name} />
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={
-                                    <Typography variant="body2" sx={{ fontWeight: 400, fontSize: "14px" }}>
-                                        {relative.name}
-                                    </Typography>
+            {loading ? <SkeletonRelative /> :
+                <CardContent sx={{ p: 0 }}>
+                    <List disablePadding>
+                        {mergedRelatives.map((relative, index) => (
+                            <ListItem
+                                key={index}
+                                secondaryAction={
+                                    <IconButton edge="end" sx={{ p: 0, mr: 1 }}>
+                                        <Avatar src={AddFriendIcon} sx={{ width: 24, height: 24 }} />
+                                    </IconButton>
                                 }
-                                secondary={
-                                    <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 400, fontSize: "12px" }}>
-                                        {relative.relation ?? "Relative"}
-                                    </Typography>
-                                }
-                                sx={{ flex: 1 }}
-                            />
-                        </ListItem>
-                    ))}
-                </List>
-            </CardContent>
+                                sx={{ px: 2, py: 0.8 }}
+                            >
+                                <ListItemAvatar>
+                                    <Avatar src={relative.name} alt={relative.name} />
+                                </ListItemAvatar>
+                                <ListItemText
+                                    primary={
+                                        <Typography variant="body2" sx={{ fontWeight: 400, fontSize: "14px" }}>
+                                            {relative.name}
+                                        </Typography>
+                                    }
+                                    secondary={
+                                        <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 400, fontSize: "12px" }}>
+                                            {relative.relation ?? "Relative"}
+                                        </Typography>
+                                    }
+                                    sx={{ flex: 1 }}
+                                />
+                            </ListItem>
+                        ))}
+                    </List>
+                </CardContent>}
         </Card>
     );
 };

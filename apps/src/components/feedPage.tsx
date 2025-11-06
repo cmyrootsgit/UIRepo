@@ -338,7 +338,7 @@ const FeedPage: FC = () => {
       const apiPost = p.Post;
       return {
         id: apiPost._id,
-        username: profile?.FirstName || `User ${apiPost.UserId}`,
+        username: apiPost?.Name ?? apiPost?.UserId ?? 'User',
         location: "Madurai",
         profileImage: profile?.PhotoPath || getProfileImage(profile?._id),
         postImages: [
