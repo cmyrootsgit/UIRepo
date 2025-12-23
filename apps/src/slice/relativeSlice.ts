@@ -28,7 +28,13 @@ export const getRelatives = createAsyncThunk<
 const relativeSlice = createSlice({
     name: "relative",
     initialState,
-    reducers: {},
+    reducers: {
+        clearRelatives: (state) => {
+            state.suggestions = { data: { peopleYouMayKnow: [], relatives: [] } };
+            state.loading = false;
+            state.error = null;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getRelatives.pending, (state) => {
@@ -46,4 +52,5 @@ const relativeSlice = createSlice({
     },
 });
 
+export const { clearRelatives } = relativeSlice.actions;
 export default relativeSlice.reducer;

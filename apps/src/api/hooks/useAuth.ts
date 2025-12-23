@@ -1,6 +1,9 @@
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { loginUser } from "../../slice/authSlice";
-import { LoginRequest } from "../services/auth";
+import { loginUser, resetAuth } from "../../slice/authSlice";
+import { clearUser } from "../../slice/userSlice";
+import { clearUserProfile } from "../../slice/profileSlice";
+import { clearRelatives } from "../../slice/relativeSlice";
+import { authService, LoginRequest } from "../services/auth";
 import { useCallback } from "react";
 
 export const useAuth = () => {
@@ -26,10 +29,12 @@ export const useAuth = () => {
 
   // Logout function
   const logout = useCallback(() => {
-    localStorage.removeItem("token");
-    // Optionally, reset Redux state if you have a logout thunk
-    // dispatch(logoutUser());
-  }, []);
+    authService.logout();
+    dispatch(resetAuth());
+    dispatch(clearUser());
+    dispatch(clearUserProfile());
+    dispatch(clearRelatives());
+  }, [dispatch]);
 
   return {
     user,

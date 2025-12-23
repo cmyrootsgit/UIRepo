@@ -64,5 +64,5 @@ export class BaseHttpClient {
   }
 }
 
-const API_URL = "http://3.208.10.88:8081/api";
+const API_URL = "http://18.209.12.77/api";
 export const baseHttpClient = new BaseHttpClient(API_URL);

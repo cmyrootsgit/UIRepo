@@ -22,8 +22,8 @@ import Notifications from "../assets/notifications.svg";
 import Favorites from "../assets/favorites.svg";
 import Logout from "../assets/light-logout.svg";
 
-import { authService } from "../api/services/auth";
 import { useAppSelector } from "../redux/store";
+import { useAuth } from "../api/hooks/useAuth";
 import { getProfileImage } from "../utils/profileImage";
 
 const menuItems = [
@@ -48,10 +48,11 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
   const location = useLocation();
   const isMobile = useMediaQuery("(max-width:900px)");
   const user = useAppSelector((state) => state.user.details);
+  const { logout } = useAuth();
 
   const handleNavigation = (path: string) => {
     if (path === "/") {
-      authService.logout();
+      logout();
       navigate("/", { replace: true });
     } else {
       navigate(path);
